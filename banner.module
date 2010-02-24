@@ -1,0 +1,235 @@
+<?php
+
+/**
+ * @file provides a banner node type and block to display banners.
+ * The banners is display based on there type, so one or
+ * more may be displayed at the same time.
+ */
+
+define('BANNER_SETTINGS_TYPE', 'banner_types');
+define('BANNER_ACTIVE_TYPES', 'banner_active_types');
+
+/**
+ * Implementation of hook_menu
+ */
+function banner_menu() {
+  $items['admin/content/banner'] = array(
+    'title' => 'Banner',
+    'description' => 'Change how banners behave',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array(
+      'banner_admin_settings'
+    ),
+    'access arguments' => array( 'administer site configuration' ),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'banner.admin.inc',
+  );
+
+  // AHAH callback for adding more types
+  $items['admin/content/banner/js'] = array(
+    'title' => 'Javascript Banner Type Form',
+    'page callback' => 'banner_types_js',
+    'access arguments' => array( 'administer site configuration' ),
+    'type' => MENU_CALLBACK,
+    'file' => 'banner.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function banner_perm() {
+  return array('create banner', 'edit banner', 'delete banner');
+}
+
+/**
+ * Implementation of hook_access
+ */
+function banner_access($op, $node, $account) {
+  switch ($op) {
+    case 'create':
+      return user_access('create banner', $account);
+      break;
+
+    case 'update':
+      return user_access('edit banner', $account);
+      break;
+
+    case 'delete':
+      return user_access('delete banner', $account);
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_alter
+ */
+function banner_form_alter(&$form, $form_state, $form_id) {
+ if (trim($form_id) == 'banner_node_form') {
+   // Load  banner types
+   $types = variable_get(BANNER_SETTINGS_TYPE, array());
+
+   if (count($types)) {
+     // Add them to the form
+     foreach ($types as $text => $count) {
+       $value .= $text ."\n";
+     }
+     $form['#field_info']['field_banner_type']['allowed_values'] = $value;
+   }
+ }
+}
+
+/**
+ * Implementation of hook_nodeapi
+ *
+ * Makes sure that only banners of types that exists are shown
+ * by adding them to BANNER_ACTIVE_TYPES array.
+ *
+ */
+function banner_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if ($node->type == 'banner') {
+    switch ($op) {
+      case "insert":
+      case "update":
+      case "delete":
+        _banner_update_active_types($op, $node->field_banner_type[0]['value']);
+        break;
+    }
+  }
+}
+
+/**
+ * This function updates the array contain banner types, where one or more
+ * banner exists. It's used to ensure that a banner type without any banner's
+ * are NOT randomly selected.
+ *
+ * @param string $op
+ * @param string $value
+ */
+function _banner_update_active_types($op, $value) {
+  switch ($op) {
+    case 'insert':
+      $types = variable_get(BANNER_SETTINGS_TYPE, array());
+      $active_types = variable_get(BANNER_ACTIVE_TYPES, array());
+      if (!array_key_exists($value, $active_types)) {
+        $active_types[$value] = $types[$value];
+      }
+      variable_set(BANNER_ACTIVE_TYPES, $active_types);
+      break;
+
+    case 'update':
+      _banner_update_active_types('insert', $value);
+      $types = variable_get(BANNER_SETTINGS_TYPE, array());
+      foreach ($types as $type => $number) {
+        _banner_update_active_types('delete', $type);
+      }
+      break;
+
+    case 'delete':
+      if (banner_number_of_banners($value) == 0) {
+        $active_types = variable_get(BANNER_ACTIVE_TYPES, array());
+        unset($active_types[$value]);
+        variable_set(BANNER_ACTIVE_TYPES, $active_types);
+      }
+      break;
+  }
+}
+
+/**
+ * Find the number of occurences of a banner type in the database.
+ *
+ * @param string $type
+ * @return int
+ */
+function banner_number_of_banners($type) {
+  $result = db_query('SELECT count(*) AS count
+                        FROM {content_type_banner}
+                       WHERE field_banner_type_value = \'%s\'', $type);
+  $result = db_fetch_object($result);
+  return $result->count;
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function banner_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case "list":
+      $blocks[0]['info'] = t('Random banner');
+      $blocks[0]['cache'] = BLOCK_NO_CACHE;
+      return $blocks;
+
+    case view:
+      $nodes = _banner_load_random_nodes();
+
+      $banners = array();
+      foreach ($nodes as $node) {    
+        $banners[] = array('url' => $node->field_url[0]['value'],
+                           'img' => $node->field_banner_upload[0]['filepath'],
+                           'alt' => $node->title);
+      }
+      $type = str_replace(' ', '-', strtolower($node->field_banner_type[0]['value']));
+
+      $block['content'] = theme('banner', $banners, $type);
+      return $block;
+  }  
+}
+
+/**
+ * Implmentation of hook_theme. Make 'banner' theme function visible.
+ *
+ * @return array
+ */
+function banner_theme() {
+  return array(
+    'banner' => array(
+      'arguments' => array('type' => NULL),
+    ),
+  );
+}
+
+/**
+ * Theme random banner block content.
+ *
+ * @param array $banners
+ * @return string
+ */
+function theme_banner($banners, $type) {
+  $count = 0;
+  $output  = '<div class="banner-random '. $type .'">';
+  foreach ($banners as $banner) {
+    if (isset($banner['url'])) {
+      $output .= '<div id="banner_'. $count .'"><a href="'. $banner['url'] .'" rel="external"><img alt="'. $banner['alt'] .'" src="/'. $banner['img'] .'" /></a></div>';
+    }
+    else {
+      $output .= '<div id="banner_'. $count .'"><img alt="'. $banner['alt'] .'" src="/'. $banner['img'] .'" /></div>';
+    }
+    $count++;
+  }
+  $output .= '</div>';
+  
+  return $output;
+}
+
+/**
+ * Finds random banner node.
+ */
+function _banner_load_random_nodes() {
+  // Random select type
+  $types = variable_get(BANNER_ACTIVE_TYPES, array());
+  $text = array_rand($types);
+  
+  // Load random banner, based on type
+  $nodes = array();
+  $result = db_query('SELECT nid
+                      FROM {content_type_banner}
+                      WHERE field_banner_type_value = \'%s\'
+                      ORDER BY RAND() LIMIT 0,%d', $text, $types[$text]);
+  while ($data = db_fetch_object($result)) {
+    $nodes[] = node_load($data->nid);
+  }
+
+  return $nodes;
+}

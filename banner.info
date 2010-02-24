@@ -1,0 +1,8 @@
+; $Id$
+name = Banner
+description = Place x banners on a page based on the size of the banners
+core = 6.x
+version = 6.x-0.1-alpha
+package = ITK
+dependencies[] = imagefield
+dependencies[] = imagecache

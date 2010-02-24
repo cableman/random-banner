@@ -1,0 +1,34 @@
+<?php
+
+// $Id$
+
+/**
+ * @file installes the default banner types and the cck banner content type.
+ */
+
+
+include_once 'banner.module';
+include_once 'cck_banner.inc';
+
+/**
+ * Implementation of hook_install
+ */
+function banner_install() {
+  // Create banner content-type, with CCK fields
+  _banner_cck_install();
+
+ // Set default banner types
+  variable_set(BANNER_SETTINGS_TYPE, array('Banner type I' => '1', 'Banner type II' => '2'));
+}
+
+/**
+ * Implementation of hook_uninstall
+ */
+function banner_uninstall() {
+  // Remove settings.
+  variable_del(BANNER_SETTINGS_TYPE);
+  variable_del(BANNER_ACTIVE_TYPES);
+
+  // Remove the banner node type
+  node_type_delete('Banner');
+}
