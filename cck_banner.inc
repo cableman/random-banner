@@ -13,7 +13,7 @@
  * @return array
  */
 function _banner_cck_export() {
-  $content['type']  = array(
+  $content['type']  = array (
     'name' => 'Banner',
     'type' => 'banner',
     'description' => 'Add random banner\'s to be displayed on the pages. The number of banner\'s display is dependent on the banner type selected. ',
@@ -22,33 +22,46 @@ function _banner_cck_export() {
     'min_word_count' => '0',
     'help' => '',
     'node_options' =>
-    array(
-      'status' => FALSE,
-      'promote' => FALSE,
-      'sticky' => FALSE,
-      'revision' => FALSE,
+    array (
+      'status' => false,
+      'promote' => false,
+      'sticky' => false,
+      'revision' => false,
     ),
-    'language_content_type' => '0',
+    'language_content_type' => '1',
     'old_type' => 'banner',
     'orig_type' => '',
     'module' => 'node',
     'custom' => '1',
     'modified' => '1',
     'locked' => '0',
+    'comment' => '2',
+    'comment_default_mode' => '4',
+    'comment_default_order' => '1',
+    'comment_default_per_page' => '50',
+    'comment_controls' => '3',
+    'comment_anonymous' => 0,
+    'comment_subject_field' => '1',
+    'comment_preview' => '1',
+    'comment_form_location' => '0',
     'menu' =>
-    array(
-      'admin' => FALSE,
-      'devel' => FALSE,
-      'navigation' => FALSE,
-      'secondary-links' => FALSE,
-      'menu-isbanen-links' => FALSE,
-      'primary-links' => FALSE,
+    array (
+      'admin' => false,
+      'devel' => false,
+      'primary-links' => false,
+      'navigation' => false,
+      'menu-region' => false,
+      'menu-search' => false,
+      'secondary-links' => false,
     ),
-    'event_nodeapi' => 'never',
+    'i18n_newnode_current' => 0,
+    'i18n_required_node' => 0,
+    'i18n_lock_node' => 0,
+    'i18n_node' => '1',
   );
-  $content['fields']  = array(
+  $content['fields']  = array (
     0 =>
-    array(
+    array (
       'label' => 'Type',
       'field_name' => 'field_banner_type',
       'type' => 'text',
@@ -57,67 +70,70 @@ function _banner_cck_export() {
       'weight' => '-4',
       'description' => '',
       'default_value' =>
-      array(
+      array (
         0 =>
-        array(
-          'value' => 'Banner type I',
+        array (
+          'value' => '',
         ),
       ),
       'default_value_php' => '',
       'default_value_widget' => NULL,
-      'group' => FALSE,
+      'group' => false,
       'required' => 1,
       'multiple' => '0',
       'text_processing' => '0',
       'max_length' => '',
-      'allowed_values' => 'Banner type I
-    Banner type II',
-      'allowed_values_php' => '',
+      'allowed_values' => '',
+      'allowed_values_php' => '$types = array();
+                               foreach (variable_get(\'banner_types\', array()) as $text => $count) {
+                                 array_push($types, $text);
+                               }
+                               return $types;',
       'op' => 'Save field settings',
       'module' => 'text',
       'widget_module' => 'optionwidgets',
       'columns' =>
-      array(
+      array (
         'value' =>
-        array(
+        array (
           'type' => 'text',
           'size' => 'big',
-          'not NULL' => FALSE,
-          'sortable' => TRUE,
-          'views' => TRUE,
+          'not null' => false,
+          'sortable' => true,
+          'views' => true,
         ),
       ),
       'display_settings' =>
-      array(
+      array (
         'label' =>
-        array(
+        array (
           'format' => 'above',
           'exclude' => 0,
         ),
         'teaser' =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
         'full' =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
         4 =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
         'token' =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
       ),
     ),
     1 =>
-    array(
+    array (
       'label' => 'Banner',
       'field_name' => 'field_banner_upload',
       'type' => 'filefield',
@@ -140,7 +156,7 @@ function _banner_cck_export() {
       'default_image_upload' => '',
       'default_image' => NULL,
       'description' => '',
-      'group' => FALSE,
+      'group' => false,
       'required' => 1,
       'multiple' => '0',
       'list_field' => '0',
@@ -150,58 +166,58 @@ function _banner_cck_export() {
       'module' => 'filefield',
       'widget_module' => 'imagefield',
       'columns' =>
-      array(
+      array (
         'fid' =>
-        array(
+        array (
           'type' => 'int',
-          'not NULL' => FALSE,
-          'views' => TRUE,
+          'not null' => false,
+          'views' => true,
         ),
         'list' =>
-        array(
+        array (
           'type' => 'int',
           'size' => 'tiny',
-          'not NULL' => FALSE,
-          'views' => TRUE,
+          'not null' => false,
+          'views' => true,
         ),
         'data' =>
-        array(
+        array (
           'type' => 'text',
-          'serialize' => TRUE,
-          'views' => TRUE,
+          'serialize' => true,
+          'views' => true,
         ),
       ),
       'display_settings' =>
-      array(
+      array (
         'label' =>
-        array(
+        array (
           'format' => 'above',
           'exclude' => 0,
         ),
         'teaser' =>
-        array(
+        array (
           'format' => 'image_plain',
           'exclude' => 0,
         ),
         'full' =>
-        array(
+        array (
           'format' => 'image_plain',
           'exclude' => 0,
         ),
         4 =>
-        array(
+        array (
           'format' => 'image_plain',
           'exclude' => 0,
         ),
         'token' =>
-        array(
+        array (
           'format' => 'image_plain',
           'exclude' => 0,
         ),
       ),
     ),
     2 =>
-    array(
+    array (
       'label' => 'URL',
       'field_name' => 'field_url',
       'type' => 'text',
@@ -212,26 +228,26 @@ function _banner_cck_export() {
       'size' => '60',
       'description' => '',
       'default_value' =>
-      array(
+      array (
         0 =>
-        array(
+        array (
           'value' => '',
           '_error_element' => 'default_value_widget][field_url][0][value',
         ),
       ),
       'default_value_php' => '',
       'default_value_widget' =>
-      array(
+      array (
         'field_url' =>
-        array(
+        array (
           0 =>
-          array(
+          array (
             'value' => '',
             '_error_element' => 'default_value_widget][field_url][0][value',
           ),
         ),
       ),
-      'group' => FALSE,
+      'group' => false,
       'required' => 0,
       'multiple' => '0',
       'text_processing' => '0',
@@ -242,47 +258,47 @@ function _banner_cck_export() {
       'module' => 'text',
       'widget_module' => 'text',
       'columns' =>
-      array(
+      array (
         'value' =>
-        array(
+        array (
           'type' => 'text',
           'size' => 'big',
-          'not NULL' => FALSE,
-          'sortable' => TRUE,
-          'views' => TRUE,
+          'not null' => false,
+          'sortable' => true,
+          'views' => true,
         ),
       ),
       'display_settings' =>
-      array(
+      array (
         'label' =>
-        array(
+        array (
           'format' => 'above',
           'exclude' => 0,
         ),
         'teaser' =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
         'full' =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
         4 =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
         'token' =>
-        array(
+        array (
           'format' => 'default',
           'exclude' => 0,
         ),
       ),
     ),
   );
-  $content['extra']  = array(
+  $content['extra']  = array (
     'title' => '-5',
     'revision_information' => '0',
     'comment_settings' => '1',

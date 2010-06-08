@@ -64,24 +64,6 @@ function banner_access($op, $node, $account) {
 }
 
 /**
- * Implementation of hook_alter
- */
-function banner_form_alter(&$form, $form_state, $form_id) {
- if (trim($form_id) == 'banner_node_form') {
-   // Load  banner types
-   $types = variable_get(BANNER_SETTINGS_TYPE, array());
-
-   if (count($types)) {
-     // Add them to the form
-     foreach ($types as $text => $count) {
-       $value .= $text ."\n";
-     }
-     $form['#field_info']['field_banner_type']['allowed_values'] = $value;
-   }
- }
-}
-
-/**
  * Implementation of hook_nodeapi
  *
  * Makes sure that only banners of types that exists are shown
