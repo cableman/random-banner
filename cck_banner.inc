@@ -85,10 +85,10 @@ function _banner_cck_export() {
       'max_length' => '',
       'allowed_values' => '',
       'allowed_values_php' => '$types = array();
-                               foreach (variable_get(\'banner_types\', array()) as $text => $count) {
-                                 array_push($types, $text);
-                               }
-                               return $types;',
+  foreach (variable_get(\'banner_types\', array()) as $text => $count) {
+    $types[$text] = $text;
+  }
+  return $types;',
       'op' => 'Save field settings',
       'module' => 'text',
       'widget_module' => 'optionwidgets',
