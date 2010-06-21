@@ -150,7 +150,9 @@ function banner_block($op = 'list', $delta = 0, $edit = array()) {
       foreach ($nodes as $node) {    
         $banners[] = array('url' => $node->field_url[0]['value'],
                            'img' => $node->field_banner_upload[0]['filepath'],
+                           'rel' => ($node->field_new_window[0]['value'] == 1 ? 'external' : ''),
                            'alt' => $node->title);
+        print_r($node);
       }
       $type = str_replace(' ', '-', strtolower($node->field_banner_type[0]['value']));
 
@@ -183,15 +185,18 @@ function theme_banner($banners, $type) {
   $output  = '<div class="banner-random '. $type .'">';
   foreach ($banners as $banner) {
     if (isset($banner['url'])) {
-      $output .= '<div id="banner_'. $count .'"><a href="'. $banner['url'] .'" rel="external"><img alt="'. $banner['alt'] .'" src="/'. $banner['img'] .'" /></a></div>';
+      $output .= '<div id="banner_'. $count .'" class="random-banner"><a href="'. $banner['url'] .'" rel="'. $banner['rel'] .'"><img alt="'. $banner['alt'] .'" src="/'. $banner['img'] .'" /></a></div>';
     }
     else {
-      $output .= '<div id="banner_'. $count .'"><img alt="'. $banner['alt'] .'" src="/'. $banner['img'] .'" /></div>';
+      $output .= '<div id="banner_'. $count .'" class="random-banner"><img alt="'. $banner['alt'] .'" src="/'. $banner['img'] .'" /></div>';
     }
     $count++;
   }
   $output .= '</div>';
-  
+
+  // Add javascript
+  drupal_add_js(drupal_get_path('module', 'banner') . '/js/banner.js');
+
   return $output;
 }
 

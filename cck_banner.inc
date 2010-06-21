@@ -47,7 +47,6 @@ function _banner_cck_export() {
     'menu' =>
     array (
       'admin' => false,
-      'devel' => false,
       'primary-links' => false,
       'navigation' => false,
       'menu-region' => false,
@@ -73,7 +72,7 @@ function _banner_cck_export() {
       array (
         0 =>
         array (
-          'value' => '',
+          'value' => 'Banner type I',
         ),
       ),
       'default_value_php' => '',
@@ -83,12 +82,9 @@ function _banner_cck_export() {
       'multiple' => '0',
       'text_processing' => '0',
       'max_length' => '',
-      'allowed_values' => '',
-      'allowed_values_php' => '$types = array();
-  foreach (variable_get(\'banner_types\', array()) as $text => $count) {
-    $types[$text] = $text;
-  }
-  return $types;',
+      'allowed_values' => 'Banner type I
+      Banner type II',
+      'allowed_values_php' => '',
       'op' => 'Save field settings',
       'module' => 'text',
       'widget_module' => 'optionwidgets',
@@ -140,7 +136,7 @@ function _banner_cck_export() {
       'widget_type' => 'imagefield_widget',
       'change' => 'Change basic information',
       'weight' => '-3',
-      'file_extensions' => 'png gif jpg jpeg',
+      'file_extensions' => 'png, gif, jpg, jpeg',
       'progress_indicator' => 'bar',
       'file_path' => '',
       'max_filesize_per_file' => '',
@@ -297,13 +293,101 @@ function _banner_cck_export() {
         ),
       ),
     ),
+    3 =>
+    array (
+      'label' => 'New window',
+      'field_name' => 'field_new_window',
+      'type' => 'text',
+      'widget_type' => 'optionwidgets_buttons',
+      'change' => 'Change basic information',
+      'weight' => '-1',
+      'description' => '',
+      'default_value' =>
+      array (
+        0 =>
+        array (
+          'value' => '1',
+        ),
+      ),
+      'default_value_php' => '',
+      'default_value_widget' =>
+      array (
+        'field_new_window' =>
+        array (
+          'value' => '1',
+        ),
+      ),
+      'group' => false,
+      'required' => 1,
+      'multiple' => '0',
+      'text_processing' => '0',
+      'max_length' => '',
+      'allowed_values' => '1|Ja
+  2|Nej',
+      'allowed_values_php' => '',
+      'op' => 'Save field settings',
+      'module' => 'text',
+      'widget_module' => 'optionwidgets',
+      'columns' =>
+      array (
+        'value' =>
+        array (
+          'type' => 'text',
+          'size' => 'big',
+          'not null' => false,
+          'sortable' => true,
+          'views' => true,
+        ),
+      ),
+      'display_settings' =>
+      array (
+        'label' =>
+        array (
+          'format' => 'above',
+          'exclude' => 0,
+        ),
+        'teaser' =>
+        array (
+          'format' => 'default',
+          'exclude' => 0,
+        ),
+        'full' =>
+        array (
+          'format' => 'default',
+          'exclude' => 0,
+        ),
+        4 =>
+        array (
+          'format' => 'default',
+          'exclude' => 0,
+        ),
+        2 =>
+        array (
+          'format' => 'default',
+          'exclude' => 0,
+        ),
+        3 =>
+        array (
+          'format' => 'default',
+          'exclude' => 0,
+        ),
+        'token' =>
+        array (
+          'format' => 'default',
+          'exclude' => 0,
+        ),
+      ),
+    ),
   );
   $content['extra']  = array (
     'title' => '-5',
-    'revision_information' => '0',
-    'comment_settings' => '1',
-    'menu' => '-1',
-    'path' => '2',
+    'revision_information' => '1',
+    'author' => '5',
+    'options' => '6',
+    'comment_settings' => '3',
+    'language' => '2',
+    'menu' => '0',
+    'path' => '4',
   );
 
   return $content;
