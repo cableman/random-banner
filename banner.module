@@ -152,7 +152,6 @@ function banner_block($op = 'list', $delta = 0, $edit = array()) {
                            'img' => $node->field_banner_upload[0]['filepath'],
                            'rel' => ($node->field_new_window[0]['value'] == 1 ? 'external' : ''),
                            'alt' => $node->title);
-        print_r($node);
       }
       $type = str_replace(' ', '-', strtolower($node->field_banner_type[0]['value']));
 
